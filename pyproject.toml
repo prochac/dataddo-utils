@@ -2,11 +2,9 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-
-
 [project]
 name = "prochac-dataddo-utils"
-version = "0.0.1"
+version = "0.1.0"
 authors = [
     { name = "Tomáš Karela Procházka", email = "tomas.prochazka5d@gmail.com" },
 ]
@@ -19,7 +17,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "numpy",
+    "pyarrow",
     "requests",
 ]
 
@@ -27,8 +25,29 @@ dependencies = [
 Homepage = "https://github.com/prochac/dataddo-utils"
 Issues = "https://github.com/prochac/dataddo-utils/issues"
 
-[tool]
-[tool.hatch.build.targets.wheel]
-packages = [
-    "src/dataddo"
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+    "ty",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dataddo"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+]
+
+[tool.ty.src]
+include = ["src", "tests"]
