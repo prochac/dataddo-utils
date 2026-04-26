@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch: {}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.11"
+          enable-cache: true
+
+      - run: uv sync
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Format check
+        run: uv run ruff format --check .
+
+      - name: Type check
+        run: uv run ty check
+
+      - name: Tests
+        run: uv run pytest -v
+        env:
+          DATADDO_TOKEN: ${{ secrets.DATADDO_TOKEN }}
+          DATADDO_SOURCE_ID: ${{ secrets.DATADDO_SOURCE_ID }}
+          DATADDO_HOST: ${{ secrets.DATADDO_HOST }}
