@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "prochac-dataddo-utils"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
     { name = "Tomáš Karela Procházka", email = "tomas.prochazka5d@gmail.com" },
 ]

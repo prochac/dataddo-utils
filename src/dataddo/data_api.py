@@ -61,6 +61,10 @@ def get_source_data(
         ct = resp.headers.get("Content-Type", "")
         if not ct.startswith(ARROW_STREAM_MIME):
             raise ValueError(f"Expected {ARROW_STREAM_MIME}, got {ct}")
+        # stream=True with resp.raw skips Content-Encoding handling; tell
+        # urllib3 to decompress so gzipped responses are read as raw Arrow IPC
+        # bytes.
+        resp.raw.decode_content = True
         with pa.ipc.open_stream(resp.raw) as reader:
             return reader.read_all()
 
